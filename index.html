@@ -158,13 +158,13 @@ pre.code .s { color: #9ad0ff; }
   <section class="scene" id="about">
     <div class="topbar">
       <span>About me</span>
-      <button hidden id="thToggle" type="button" aria-pressed="true">TH on</button>
+      <button id="thToggle" type="button" aria-pressed="true">TH on</button>
     </div>
     <div class="card">
       <div class="id-row">
-       <div class="avatar" id="avatar" aria-label="Profile picture"><img src="june.jpg" alt="June"></div>
+       <div class="avatar" aria-label="Profile picture"><img src="june.jpeg" alt="June"></div>
         <div>
-          <button class="photo-btn" id="photoBtn" type="button">+ add photo</button>
+          <!-- <button class="photo-btn" id="photoBtn" type="button">+ add photo</button> -->
           <input id="photoInput" type="file" accept="image/*" hidden>
         </div>
       </div>
@@ -181,15 +181,15 @@ pre.code .s { color: #9ad0ff; }
         <p class="th">ตอนนี้ฉันกำลังหัดเรียนเขียนโค้ดพร้อมกับเรียนอยู่ชั้นมัธยมศึกษาปีที่ 3/1 แน่นอน ฉันอายุแค่ 14 ปี เริ่มเรียนจริงๆ ตั้งแต่เดือนสิงหาคม แล้วก็หายไปสอบ ฉันเป็นคนเฟรนด์ลี่ MBTI ของฉันคือ INTJ<br>ในอนาคตอาจไปสายคอมพิวเตอร์ ออกแบบ UI</p>
         <pre class="code"><span class="k">print</span>(<span class="s">"Hello, I'm June"</span>)</pre>
         <div class="contact">
-          <a href="#" target="_blank" rel="noopener">
+          <a href="https://www.facebook.com/share/1EwrcWAEpR/" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
             Facebook
           </a>
-          <a href="#" target="_blank" rel="noopener">
+          <a href="https://www.instagram.com/pxtchyzp_?cplk=a296MGgwd3JjMGlh" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             Instagram
           </a>
-          <a href="#" target="_blank" rel="noopener">
+          <a href="https://github.com/pitchayapa-june" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
             GitHub
           </a>
@@ -259,7 +259,8 @@ pre.code .s { color: #9ad0ff; }
 
   /* Optional photo, shown only in this browser */
   var input = document.getElementById('photoInput');
-  document.getElementById('photoBtn').addEventListener('click', function () { input.click(); });
+  var photoBtn = document.getElementById('photoBtn');
+  if (photoBtn) photoBtn.addEventListener('click', function () { input.click(); });
   input.addEventListener('change', function () {
     var f = input.files && input.files[0];
     if (!f) return;
