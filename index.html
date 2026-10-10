@@ -152,6 +152,10 @@ pre.code .s { color: #9ad0ff; }
       </h1>
     </div>
     <div class="cta-wrap">
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+
+</script>
       <button class="cta" id="go" type="button">click me! <span class="arr" aria-hidden="true">↓</span></button>
     </div>
   </section>
@@ -203,6 +207,71 @@ pre.code .s { color: #9ad0ff; }
 </main>
 
 <script>
+
+const card   = document.getElementById('musicCard');
+const fill   = document.getElementById('musicFill');
+const bar    = document.getElementById('musicBar');
+const cur    = document.getElementById('musicCur');
+const total  = document.getElementById('musicTotal');
+const btn    = document.getElementById('musicPlay');
+const titleEl  = document.getElementById('musicTitle');
+const artistEl = document.getElementById('musicArtist');
+
+const fmt = s => Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
+
+let player, timer;
+
+// YouTube เรียกฟังก์ชันนี้เองเมื่อโหลดเสร็จ
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('ytPlayer', {
+    videoId: card.dataset.video,
+    playerVars: { playsinline: 1 },
+    events: { onReady: loadInfo, onStateChange: onState }
+  });
+}
+
+function loadInfo() {
+  const d = player.getVideoData();
+  titleEl.textContent  = d.title || 'ชื่อเพลง';
+  artistEl.textContent = d.author || '';
+  total.textContent    = fmt(player.getDuration());
+}
+
+function render() {
+  const t = player.getCurrentTime(), dur = player.getDuration();
+  fill.style.width = (dur ? (t / dur) * 100 : 0) + '%';
+  cur.textContent = fmt(t);
+  total.textContent = fmt(dur);
+}
+
+function onState(e) {
+  clearInterval(timer);
+  if (e.data === YT.PlayerState.PLAYING) {
+    btn.textContent = '❚❚';
+    loadInfo();
+    timer = setInterval(render, 250);   // แถบเลื่อนตามเพลง
+  } else {
+    btn.textContent = '▶';
+    if (e.data === YT.PlayerState.ENDED) render();
+  }
+}
+
+btn.addEventListener('click', () => {
+  if (!player) return;
+  player.getPlayerState() === YT.PlayerState.PLAYING ? player.pauseVideo() : player.playVideo();
+});
+
+// คลิกที่แถบเพื่อกรอไปตำแหน่งนั้น
+bar.addEventListener('click', e => {
+  if (!player) return;
+  const r = bar.getBoundingClientRect();
+  player.seekTo(((e.clientX - r.left) / r.width) * player.getDuration(), true);
+  render();
+});
+
+
+
+
 (function () {
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 

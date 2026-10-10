@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../js-basic"
+		},
+		{
+			"path": "../python"
+		},
+		{
+			"path": "../bot"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "js-basic"
+	}
+}
