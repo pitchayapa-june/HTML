@@ -82,31 +82,32 @@ img { max-width: 100%; }
 
 .music-card {
   display: grid;
-  grid-template-columns: 88px minmax(0, 1fr);
-  gap: 14px;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 10px;
   align-items: center;
-  width: min(100%, 480px);
-  margin: 0 auto 24px;
-  padding: 12px;
+  width: min(100%, 360px);
+  margin: 0 auto 16px;
+  padding: 9px;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  background: rgba(8, 14, 38, 0.92);
+  border-radius: 12px;
+  background: rgba(8, 14, 38, 0.82);
   backdrop-filter: blur(6px);
 }
-.music-cover { display: block; width: 88px; height: 88px; border-radius: 10px; object-fit: cover; }
-.music-controls { display: grid; min-width: 0; gap: 8px; }
-.music-title { margin: 0; color: var(--fg); font-family: var(--display); font-size: 1rem; line-height: 1.2; }
-.music-artist { margin: 2px 0 0; color: var(--muted); font-size: 0.8rem; }
+.music-cover { display: block; width: 52px; height: 52px; border-radius: 7px; object-fit: cover; }
+.music-controls { display: grid; min-width: 0; gap: 5px; }
+.music-title { margin: 0; color: var(--fg); font-family: var(--display); font-size: 0.85rem; line-height: 1.2; }
+.music-artist { margin: 1px 0 0; color: var(--muted); font-size: 0.72rem; line-height: 1.2; }
 .music-progress { display: block; width: 100%; height: 5px; margin: 0; accent-color: var(--blue); cursor: pointer; }
-.music-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.music-times { display: flex; flex: 1; justify-content: space-between; color: var(--muted); font-family: var(--mono); font-size: 0.7rem; }
+.music-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.music-times { display: flex; flex: 1; justify-content: space-between; color: var(--muted); font-family: var(--mono); font-size: 0.65rem; }
 .music-play {
-  appearance: none; min-width: 74px; min-height: 32px; padding: 4px 10px;
+  appearance: none; min-width: 64px; min-height: 28px; padding: 3px 8px;
   border: 1px solid var(--line); border-radius: 999px; background: rgba(8, 14, 38, 0.9);
-  color: var(--blue-soft); font-family: var(--mono); font-size: 0.75rem; cursor: pointer;
+  color: var(--blue-soft); font-family: var(--mono); font-size: 0.68rem; cursor: pointer;
 }
 .music-play:hover { border-color: var(--blue); background: var(--blue); color: #fff; }
-.spotify-api-host { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
+.spotify-api-clip { position: fixed; top: 0; left: -10000px; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); pointer-events: none; }
+.spotify-api-clip iframe { position: absolute !important; top: 0 !important; left: 0 !important; width: 1px !important; height: 1px !important; border: 0 !important; }
 .music-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .music-links a {
   appearance: none; display: inline-flex; align-items: center; justify-content: center;
@@ -167,8 +168,6 @@ pre.code .s { color: #9ad0ff; }
   .row { grid-template-columns: 1fr; }
   .row dt { padding-top: 0; }
   .card { padding: 18px; }
-  .music-card { grid-template-columns: 72px minmax(0, 1fr); gap: 10px; padding: 10px; }
-  .music-cover { width: 72px; height: 72px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -201,11 +200,11 @@ pre.code .s { color: #9ad0ff; }
           <div class="music-times"><span id="musicCurrent">0:00</span><span id="musicDuration">0:00</span></div>
           <button class="music-play" id="musicPlay" type="button">▶ เล่น</button>
         </div>
-        <div id="spotifyPlayer" class="spotify-api-host" aria-hidden="true"></div>
         <div class="music-links" aria-label="ช่องทางการฟัง">
           <a href="https://open.spotify.com/intl-th/track/2262bWmqomIaJXwCRHr13j?si=7ec5596cc8794024" target="_blank" rel="noopener noreferrer">เปิดใน Spotify</a>
         </div>
       </div>
+      <div class="spotify-api-clip" aria-hidden="true"><div id="spotifyPlayer"></div></div>
     </section>
     <div class="cta-wrap">
       <button class="cta" id="go" type="button">click me! <span class="arr" aria-hidden="true">↓</span></button>
