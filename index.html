@@ -81,13 +81,14 @@ img { max-width: 100%; }
 @keyframes bob { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(4px); } }
 
 .music-card {
+  position: relative;
   display: grid;
   grid-template-columns: 52px minmax(0, 1fr);
   gap: 10px;
   align-items: center;
   width: min(100%, 360px);
   margin: 0 auto 16px;
-  padding: 9px;
+  padding: 8px;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: rgba(8, 14, 38, 0.82);
@@ -106,8 +107,8 @@ img { max-width: 100%; }
   color: var(--blue-soft); font-family: var(--mono); font-size: 0.68rem; cursor: pointer;
 }
 .music-play:hover { border-color: var(--blue); background: var(--blue); color: #fff; }
-.spotify-api-clip { position: fixed; top: 0; left: -10000px; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); pointer-events: none; }
-.spotify-api-clip iframe { position: absolute !important; top: 0 !important; left: 0 !important; width: 1px !important; height: 1px !important; border: 0 !important; }
+.spotify-api-host { position: absolute; right: 0; bottom: 0; width: 100%; height: 80px; overflow: hidden; opacity: 0; pointer-events: none; }
+.spotify-api-host iframe { position: absolute !important; top: 0 !important; left: 0 !important; display: block; width: 360px !important; height: 80px !important; border: 0; }
 .music-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .music-links a {
   appearance: none; display: inline-flex; align-items: center; justify-content: center;
@@ -204,7 +205,7 @@ pre.code .s { color: #9ad0ff; }
           <a href="https://open.spotify.com/intl-th/track/2262bWmqomIaJXwCRHr13j?si=7ec5596cc8794024" target="_blank" rel="noopener noreferrer">เปิดใน Spotify</a>
         </div>
       </div>
-      <div class="spotify-api-clip" aria-hidden="true"><div id="spotifyPlayer"></div></div>
+      <div class="spotify-api-host" aria-hidden="true"><div id="spotifyPlayer"></div></div>
     </section>
     <div class="cta-wrap">
       <button class="cta" id="go" type="button">click me! <span class="arr" aria-hidden="true">↓</span></button>
@@ -304,13 +305,14 @@ pre.code .s { color: #9ad0ff; }
     document.getElementById('hello').scrollIntoView({ behavior: behavior });
   });
 
-  /* Spotify player controls */
+  /* Spotify API powers the compact custom player without displaying a second player. */
   var spotifyController;
   var spotifyProgress = document.getElementById('musicProgress');
   var spotifyCurrent = document.getElementById('musicCurrent');
   var spotifyDuration = document.getElementById('musicDuration');
   var spotifyPlay = document.getElementById('musicPlay');
   var spotifyDurationSeconds = 0;
+  var spotifyPaused = true;
 
   function formatMusicTime(value) {
     var seconds = Math.floor(Math.max(0, value));
@@ -320,7 +322,7 @@ pre.code .s { color: #9ad0ff; }
   window.onSpotifyIframeApiReady = function (IFrameAPI) {
     IFrameAPI.createController(
       document.getElementById('spotifyPlayer'),
-      { uri: 'spotify:track:2262bWmqomIaJXwCRHr13j' },
+      { uri: 'spotify:track:2262bWmqomIaJXwCRHr13j', width: 360, height: 80 },
       function (controller) {
         spotifyController = controller;
         spotifyProgress.disabled = false;
@@ -329,6 +331,7 @@ pre.code .s { color: #9ad0ff; }
           var duration = Number(data.duration) || 0;
           var position = Number(data.position) || 0;
           spotifyDurationSeconds = duration / 1000;
+          spotifyPaused = data.isPaused;
           spotifyProgress.value = duration ? String(Math.round(position / duration * 1000)) : '0';
           spotifyCurrent.textContent = formatMusicTime(position / 1000);
           spotifyDuration.textContent = formatMusicTime(spotifyDurationSeconds);
@@ -340,15 +343,17 @@ pre.code .s { color: #9ad0ff; }
 
   spotifyPlay.addEventListener('click', function () {
     if (spotifyController) {
-      spotifyController.togglePlay();
+      if (spotifyPaused) spotifyController.play();
+      else spotifyController.pause();
       return;
     }
     window.open('https://open.spotify.com/intl-th/track/2262bWmqomIaJXwCRHr13j?si=7ec5596cc8794024', '_blank', 'noopener');
   });
 
   spotifyProgress.addEventListener('input', function () {
-    if (!spotifyController || !spotifyDurationSeconds) return;
-    spotifyController.seek(Math.round(Number(spotifyProgress.value) / 1000 * spotifyDurationSeconds));
+    if (spotifyController && spotifyDurationSeconds) {
+      spotifyController.seek(Math.round(Number(spotifyProgress.value) / 1000 * spotifyDurationSeconds));
+    }
   });
 
   var spotifyApi = document.createElement('script');
