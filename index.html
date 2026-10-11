@@ -115,9 +115,11 @@ img { max-width: 100%; }
 .music-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .music-times { display: flex; flex: 1; justify-content: space-between; color: var(--muted); font-family: var(--mono); font-size: 0.65rem; }
 .music-play {
-  appearance: none; min-width: 64px; min-height: 28px; padding: 3px 8px;
+  appearance: none; display: inline-flex; align-items: center; justify-content: center;
+  min-width: 64px; min-height: 44px; padding: 6px 10px;
   border: 1px solid var(--line); border-radius: 999px; background: rgba(8, 14, 38, 0.9);
-  color: var(--blue-soft); font-family: var(--mono); font-size: 0.68rem; cursor: pointer;
+  color: var(--blue-soft); font-family: var(--mono); font-size: 0.75rem; text-decoration: none;
+  cursor: pointer; touch-action: manipulation;
 }
 .music-play:hover { border-color: var(--blue); background: var(--blue); color: #fff; }
 .spotify-api-host { position: absolute; right: 0; bottom: 0; width: 100%; height: 80px; overflow: hidden; opacity: 0; pointer-events: none; }
@@ -214,9 +216,6 @@ pre.code .s { color: #9ad0ff; }
         <div class="music-bottom">
           <div class="music-times"><span id="musicCurrent">0:00</span><span id="musicDuration">0:00</span></div>
           <button class="music-play" id="musicPlay" type="button">▶ เล่น</button>
-        </div>
-        <div class="music-links" aria-label="ช่องทางการฟัง">
-          <a href="https://open.spotify.com/intl-th/track/2262bWmqomIaJXwCRHr13j?si=7ec5596cc8794024" target="_blank" rel="noopener noreferrer">เปิดใน Spotify</a>
         </div>
       </div>
       <div class="spotify-api-host" aria-hidden="true"><div id="spotifyPlayer"></div></div>
@@ -359,7 +358,7 @@ pre.code .s { color: #9ad0ff; }
     document.getElementById('hello').scrollIntoView({ behavior: behavior });
   });
 
-  /* Spotify API powers the compact custom player without displaying a second player. */
+  /* Spotify playback powers the custom controls. */
   var spotifyController;
   var spotifyProgress = document.getElementById('musicProgress');
   var spotifyCurrent = document.getElementById('musicCurrent');
